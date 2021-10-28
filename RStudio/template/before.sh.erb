@@ -1,0 +1,32 @@
+# Export the module function if it exists
+[[ $(type -t module) == "function" ]] && export -f module
+
+# Find available port to run server on
+port=$(find_port ${host})
+
+# Find port to setup Socks proxy
+
+sport=$(find_port ${host})
+ssh -f -N -D$sport cl1
+export MYRENVIRON=$(mktemp)
+if [ -f $HOME/.Renviron ]
+then
+  cp -f $HOME/.Renviron $MYRENVIRON
+else
+  touch $HOME/.Renviron
+fi
+
+sed -i '/https_proxy/d' $MYRENVIRON
+echo "https_proxy=socks5h://localhost:$sport" >> $MYRENVIRON
+echo "http_proxy=socks5h://localhost:$sport" >> $MYRENVIRON
+
+
+# Define a password and export it for RStudio authentication
+password="$(create_passwd 16)"
+export RSTUDIO_PASSWORD="${password}"
+<%-
+  require 'securerandom'
+  csrftoken=SecureRandom.uuid
+-%>
+export csrf_token="<%= csrftoken %>"
+

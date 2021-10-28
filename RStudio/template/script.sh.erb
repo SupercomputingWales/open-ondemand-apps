@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# Benchmark info
+echo "TIMING - Starting main script at: $(date)"
+
+# Set working directory to home directory
+cd "${HOME}"
+
+#
+# Start Rstudio Server
+#
+<%- unless context.rs_version.blank? -%>
+# Load rstudio module
+module load rstudio-server/<%= context.rs_version %>
+<%- end -%>
+
+module list
+
+<%- unless context.ha_modules.blank? -%>
+# Load additional modules
+module load <%= context.ha_modules %>
+<%- end -%>
+
+# Benchmark info
+echo "TIMING - Starting rstudio at: $(date)"
+
+# Launch Rstudio
+set -x
+rstudio-server-dev ${port}
+
+# Remove temporary Renviron
+rm $MYRENVIRON
+

@@ -1,0 +1,72 @@
+---
+cluster: "hawk"
+
+form:
+  - rs_version
+  - ha_modules
+  - ha_partition
+  - ha_cpus
+  - ha_gpus
+  - ha_mem
+  - ha_reservation
+  - bc_account
+  - bc_num_hours
+  - email
+  - bc_email_on_started
+
+attributes:
+  rs_version:
+    label: "Version of RStudio."
+    help: "<small>Supported version of RStudio available."
+    widget: select
+    options:
+      - [ "1.4.1717", "1.4.1717" ]
+      - [ "1.3.1093", "1.3.1093" ]
+    value: "1.4.1717"
+
+  ha_modules:
+    label: "Additional modules (optional)"
+    help: "<small>Space separated list of additional modules to load</small>"
+
+  ha_partition:
+    label: "Partition"
+    value: "dev"
+    required: true
+    help: "<small>Partition to submit the job to</small>"
+    widget: text_field
+
+  ha_cpus:
+    label: "#CPUs"
+    widget: "number_field"
+    help: "<small>Number of CPU cores to allocate</small>"
+    required: true
+    min: 1
+    value: "1"
+
+  ha_gpus:
+    label: "#GPUs (optional)"
+    widget: "number_field"
+    help: "<small>Number of GPUs to allocate (don't forget to select a partition with GPUs)</small>"
+    min: 1
+    max: 2
+    value: ""
+
+  ha_mem:
+    label: "Memory (GB) (optional)"
+    widget: "number_field"
+    help: "<small>Amount of memory to allocate</small>"
+  
+  ha_reservation:
+    label: "Reservation (optional)"
+    help: "<small>For special occassions a reservation may be given</small>" 
+  
+  bc_account:
+    label: "Project code"
+ 
+  bc_num_hours:
+    label: "Runtime (in hours)"
+
+  email:
+    label: "Email address"
+    help: "<small>Address used to send start of job notification</small>"
+
